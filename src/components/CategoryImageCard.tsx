@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import type { MenuCategory } from '@/lib/menu-data';
 import type { Language, Translations } from '@/lib/translations';
 import { CATEGORY_IMAGES } from '@/lib/category-images';
@@ -22,6 +22,7 @@ interface CategoryImageCardProps {
   t: Translations;
   language: Language;
   itemsCount: number;
+  priority?: boolean;
 }
 
 export function CategoryImageCard({
@@ -29,6 +30,7 @@ export function CategoryImageCard({
   t,
   language,
   itemsCount,
+  priority = false,
 }: CategoryImageCardProps) {
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -84,7 +86,8 @@ export function CategoryImageCard({
           <img
             src={imageConfig.src}
             alt={altText}
-            loading="lazy"
+            loading={priority ? 'eager' : 'lazy'}
+            fetchPriority={priority ? 'high' : 'auto'}
             decoding="async"
             referrerPolicy="no-referrer"
             onLoad={() => setImageLoaded(true)}
@@ -127,7 +130,10 @@ export function CategoryImageCard({
         <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5 z-10 text-white">
           <div className="flex items-end justify-between gap-4">
             <div className="max-w-2xl">
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-black uppercase tracking-tight font-heading text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] flex items-center gap-2">
+              <h2
+                id={`heading-${category.id}`}
+                className="text-xl sm:text-2xl md:text-3xl font-black uppercase tracking-tight font-heading text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] flex items-center gap-2"
+              >
                 <span>{categoryName}</span>
               </h2>
               <p className="text-xs sm:text-sm text-zinc-200 line-clamp-2 mt-1 leading-snug drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)] opacity-95">

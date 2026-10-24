@@ -1,95 +1,100 @@
-# PANNELLO — TASTE THE BEST | Digital Menu
+# PANNELLO — TASTE THE BEST | Menu Numérique
 
-A premium, modern, responsive digital restaurant menu for **PANNELLO**, designed mobile-first for quick dining access via QR code scanning. Built with Next.js, React, TypeScript, Tailwind CSS, and custom dark/light theme systems.
-
----
-
-## 📋 Features
-
-- **Exact Header Layout**: 
-  - Left: Hamburger button with drawer navigation
-  - Center: Mathematically centered official PANNELLO logo (`/assets/pannello_logo.png`)
-  - Right: Theme switcher (Dark / Light mode) with persistent memory in `localStorage`
-- **Horizontal Rectangular Category Navigation**:
-  - Faithfully reproduces the hand-drawn sketch with adjacent rectangular tabs: `[ BURGERS ] [ POCKET ] [ FRIES ] [ DRINKS ] [ SWEETS ] [ PIZZA ] [ SANDWICHS ] [ TACOS ] [ TOMBIK ] [ CALZON ]`
-  - Active category highlighted with PANNELLO Brand Red and Brand Yellow
-  - Touch-friendly horizontal scrolling on mobile
-  - Smooth section scrolling with automatic active tab tracking via `IntersectionObserver`
-- **Authentic Restaurant Menu Data**:
-  - 10 full categories
-  - 100% verified pizza variants (Sauce Rouge & Sauce Blanche) with `Mini | Normal | Mega` pricing in Algerian Dinars (DA)
-  - Tacos with `M | L | XL` size columns and optional supplements (Gruyère, Camembert, Oignon caramélisé)
-  - Turkish Tombik bun sandwiches
-  - Folded Calzon turnovers with multi-filling selector
-  - Traditional sandwiches with bread selection (`Pain Brioché` vs `Pain Matlou3`)
-  - Real extracted food photography for Tacos, Pizza, Tombik, and Calzon
-- **Interactive Multi-Size Price Selector**:
-  - Toggling between Mini/Normal/Mega or M/L/XL updates the price badge dynamically in real time
-- **Instant Product Search**:
-  - Real-time accent-insensitive search (e.g. "vegetarien" matches "Végétarien")
-  - Matches dish names, ingredients, subcategories, and categories
-  - Clear button and active search result counter
-- **Geometric Grid Background**:
-  - Adaptive repeating square grid faithfully recreating `image_69fcd23d.png`
-  - In dark mode: near-black `#0a0a0d` with crisp white grid lines
-  - In light mode: clean light `#f9fafb` with subtle dark grid lines
-- **Mobile-First & QR Optimized**:
-  - Instant loading, single-hand touch ergonomics, no horizontal viewport overflows
-  - Fast slide-in hamburger drawer with category shortcuts
+Application web officielle du menu numérique **PANNELLO** (Khemis Miliana, Algérie), conçue mobile-first pour un accès instantané par scan de code QR en salle. Construite avec **Vite 8**, **React 19**, **TypeScript** et **Tailwind CSS v4**.
 
 ---
 
-## 🚀 Getting Started
+## Fonctionnalités Clés
 
-### Prerequisites
-- Node.js 18+ (tested with Node 20 / Node 22)
-- npm or yarn
+- **Introduction Cinématique Plein Écran (3 secondes)** :
+  - Scène plein écran rouge PANNELLO (`100dvh`) avec logo officiel blanc centré, ondes lumineuses 60 fps sur Canvas, bouton `Passer / Skip` accessible et respect natif de `prefers-reduced-motion`.
+- **En-tête Permanent & Navigation Catégories Fixe** :
+  - Bouton menu trois-points (`⋮`) à gauche (tiroir portalisé contenant sélecteur de langue FR/EN, accès direct aux 11 catégories, Instagram, TikTok, Facebook et localisation Google Maps).
+  - Logo PANNELLO centré avec transition instantanée entre le thème Clair (logo rouge) et le thème Sombre (logo blanc).
+  - Bascule Mode Sombre / Mode Clair à droite avec persistance `localStorage` et repli mémoire sécurisé pour les WebViews mobiles (Instagram, TikTok, Safari navigation privée).
+- **Carte Authentique Complète (11 Catégories • 68 Produits)** :
+  - `Smash Burger` (6), `Pocket` (3), `Fries` (2), `Drinks / Boissons` (12), `Sweets` (18), `Pizza Sauce Rouge` (9), `Pizza Sauce Blanche` (6), `Tacos` (5), `Sandwiches` (3), `Tombik` (3), `Calzon` (1).
+  - Sélecteurs interactifs multi-tailles (`Mini | Normal | Mega` pour les pizzas, `M | L | XL` pour les tacos), choix du pain (`Brioche | Matlou3`), choix des 6 garnitures Calzon et affichage transparent des prix en Dinars Algériens (`DA`).
+- **Recherche Instantanée Bilingue (FR / EN)** :
+  - Filtrage insensible aux accents sur les noms de plats, ingrédients, sous-catégories et catégories traduites.
 
-### Installation
+---
+
+## Prérequis & Commandes Locales
+
+- **Node.js** : `>= 20.0.0` (testé sous Node.js 22 LTS)
+- **Gestionnaire de paquets** : `npm` (via `package-lock.json`)
+
 ```bash
-npm install
-```
+# 1. Installation propre et reproductible des dépendances
+npm ci
 
-### Development Server
-```bash
+# 2. Serveur de développement (http://localhost:3000)
 npm run dev
-```
-Open [http://localhost:3000](http://localhost:3000) to view the application.
 
-### Production Build
-```bash
+# 3. Vérification TypeScript stricte
+npm run typecheck
+
+# 4. Build de production (génère dist/)
 npm run build
-npm start
+
+# 5. Prévisualisation locale du build de production (http://localhost:4173)
+npm run preview
 ```
 
 ---
 
-## 📂 Project Structure
+## Déploiement sur Vercel
 
-```
-├── app/
-│   ├── globals.css         # Theme custom properties & square-grid pattern
-│   ├── layout.tsx          # Root layout, viewport, SEO & Schema.org JSON-LD
-│   └── page.tsx            # Main digital menu page assembly
-├── components/
-│   ├── CategoryNavigation.tsx # Row of adjacent rectangular category tabs
-│   ├── Header.tsx             # Centered logo, hamburger trigger, theme toggle
-│   ├── MenuSection.tsx        # Responsive 2-column dish grid per category
-│   ├── ProductCard.tsx        # Multi-size price selector, bread & filling options
-│   ├── SearchBar.tsx          # Accent-insensitive instant product search
-│   └── SideDrawer.tsx         # Slide-in quick category & theme drawer
-├── hooks/
-│   └── use-theme.ts        # Dark/light theme persistence hook
-├── lib/
-│   └── menu-data.ts        # Structured database with all 10 categories & DA prices
+Le projet est configuré via `vercel.json` pour un déploiement statique Vite zéro-serveur :
+
+- **Framework Preset** : `Vite`
+- **Root Directory** : `./`
+- **Install Command** : `npm ci`
+- **Build Command** : `npm run build`
+- **Output Directory** : `dist`
+- **Node.js Version** : `20.x` ou `22.x`
+- **Variables d'environnement** : **Aucune requise** (application 100 % statique côté client).
+
+---
+
+## Structure du Projet
+
+```text
+├── index.html                  # Point d'entrée HTML, SEO, OpenGraph, JSON-LD & préchargement
+├── package.json                # Scripts npm et dépendances Vite + React 19 + Tailwind v4
+├── package-lock.json           # Lockfile npm déterministe pour npm ci & Vercel
+├── tsconfig.json               # Configuration TypeScript stricte
+├── vercel.json                 # Configuration de build et d'en-têtes Vercel
+├── vite.config.ts              # Configuration Vite & alias @/*
 ├── public/
-│   └── assets/             # Extracted logos and authentic food images
-├── MENU_DATA_REVIEW.md     # Audit document of source data & review flags
-└── README.md
+│   ├── assets/                 # Logos officiels PANNELLO (blanc, rouge, icônes) & photos extraites
+│   └── images/
+│       ├── categories/         # Photographies des 11 bannières de catégories
+│       └── products/           # Photographies produits dédiées
+├── src/
+│   ├── main.tsx                # Montage React DOM
+│   ├── App.tsx                 # Assemblage principal, recherche, navigation & pied de page
+│   ├── index.css               # Thème Tailwind v4, grille géométrique & animations GPU
+│   ├── components/
+│   │   ├── AmbientBackground.tsx
+│   │   ├── CategoryImageCard.tsx
+│   │   ├── CategoryNavigation.tsx
+│   │   ├── CinematicIntro.tsx
+│   │   ├── Header.tsx
+│   │   ├── Image.tsx
+│   │   ├── MenuSection.tsx
+│   │   ├── ProductCard.tsx
+│   │   ├── SearchBar.tsx
+│   │   ├── Skeletons.tsx
+│   │   └── ThreeDotMenu.tsx
+│   ├── hooks/
+│   │   ├── use-language.ts
+│   │   └── use-theme.ts
+│   └── lib/
+│       ├── category-images.ts
+│       ├── menu-data.ts
+│       ├── translations.ts
+│       └── utils.ts
+└── MENU_DATA_REVIEW.md         # Document d'audit complet des données du menu
 ```
-
----
-
-## 📝 Menu Data Audit
-
-See [MENU_DATA_REVIEW.md](./MENU_DATA_REVIEW.md) for full details on verified items vs items awaiting Page 2 confirmation from the restaurant.

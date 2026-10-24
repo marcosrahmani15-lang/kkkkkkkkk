@@ -131,8 +131,8 @@
 2. **Tacos Gratiné Ingrédients** : Prix M (650), L (850) et XL (1050) confirmés ; composition exacte à faire valider par la cuisine.
 3. **Pizza Pannelo Signature** : Choix de base sauce tomate ou sauce blanche selon préférence client.
 4. **Devise** : 100% conforme en Dinars Algériens (DA).
-5. **Photographies Réelles Extraites** :
-   - `/assets/food_pizza.png` : Pizza Pepperoni
+5. **Photographies Réelles & Visuels Produits** :
+   - `/images/products/pizza-pepperoni.jpg` (ainsi que `/assets/food_pizza.png`) : Pizza Pepperoni
    - `/assets/food_tacos.png` : Tacos Platter
    - `/assets/food_tombik.png` : Tombik Bun Sandwich
    - `/assets/food_calzon.png` : Calzon Turnover

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useTheme } from '@/hooks/use-theme';
 import { useLanguage } from '@/hooks/use-language';
@@ -10,7 +10,6 @@ import { ProductCard } from '@/components/ProductCard';
 import { AmbientBackground } from '@/components/AmbientBackground';
 import { CinematicIntro } from '@/components/CinematicIntro';
 import { MENU_CATEGORIES, MENU_ITEMS } from '@/lib/menu-data';
-import Image from '@/components/Image';
 import { ArrowUp, Utensils, AlertCircle, FileText, Download, RotateCcw } from 'lucide-react';
 import { MenuSectionSkeleton } from '@/components/Skeletons';
 
@@ -20,7 +19,6 @@ export default function App() {
   const [activeCategoryId, setActiveCategoryId] = useState<string>('smash-burger');
   const [searchQuery, setSearchQuery] = useState('');
   const [showReviewModal, setShowReviewModal] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showIntro, setShowIntro] = useState<boolean>(true);
   const [introReplayKey, setIntroReplayKey] = useState<number>(0);
   const isUserClickingRef = useRef(false);
@@ -211,14 +209,6 @@ export default function App() {
         ref={headerRef}
         id="pannello-fixed-header-container"
         className="fixed top-0 left-0 right-0 w-full z-[1000] bg-[var(--header-bg)] backdrop-blur-md shadow-xs"
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          width: '100%',
-          zIndex: 1000,
-        }}
       >
         <Header
           theme={theme}
@@ -230,7 +220,6 @@ export default function App() {
           categories={MENU_CATEGORIES}
           activeCategoryId={activeCategoryId}
           onSelectCategory={handleSelectCategory}
-          onMenuOpenChange={setIsMenuOpen}
         />
         <CategoryNavigation
           categories={MENU_CATEGORIES}
@@ -322,7 +311,7 @@ export default function App() {
           ) : (
             /* Normal Category Sections View */
             <div className="space-y-4">
-              {MENU_CATEGORIES.map((category) => {
+              {MENU_CATEGORIES.map((category, index) => {
                 const categoryItems = MENU_ITEMS.filter((item) => item.category === category.id);
                 return (
                   <MenuSection
@@ -331,6 +320,7 @@ export default function App() {
                     items={categoryItems}
                     t={t}
                     language={language}
+                    priority={index === 0}
                   />
                 );
               })}
@@ -368,13 +358,28 @@ export default function App() {
         {/* Footer with Brand Identity, Review Doc Access & iPhone Safe Area */}
         <footer className="mt-14 border-t-2 border-[var(--border-color)] bg-[var(--bg-surface)] py-10 px-4 text-center transition-colors safe-bottom">
           <div className="max-w-4xl mx-auto flex flex-col items-center justify-center space-y-4">
-            <div className="relative w-40 h-11">
-              <Image
+            <div className="header-logo-container relative w-40 h-11 flex items-center justify-center">
+              <img
+                src="/assets/pannello_logo_red.png"
+                alt="PANNELLO"
+                width={291}
+                height={74}
+                loading="lazy"
+                decoding="async"
+                className={`header-logo-image header-logo-light absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-xs ${
+                  theme === 'light' ? 'opacity-100' : 'opacity-0'
+                }`}
+              />
+              <img
                 src="/assets/pannello_logo_hero.png"
                 alt="PANNELLO"
-                fill
-                sizes="160px"
-                className="object-contain drop-shadow-xs"
+                width={580}
+                height={148}
+                loading="lazy"
+                decoding="async"
+                className={`header-logo-image header-logo-dark absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-xs ${
+                  theme === 'dark' ? 'opacity-100' : 'opacity-0'
+                }`}
               />
             </div>
 
@@ -422,7 +427,7 @@ export default function App() {
           >
             <div
               onClick={(e) => e.stopPropagation()}
-              className="bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl max-w-2xl w-full max-h-[min(88vh,calc(100dvh-2rem))] flex flex-col shadow-2xl shadow-black/80 overflow-hidden animate-in fade-in zoom-in-95 duration-150"
+              className="bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl max-w-2xl w-full max-h-[min(88vh,calc(100dvh-2rem))] flex flex-col shadow-2xl shadow-black/80 overflow-hidden animate-modal-in"
             >
               <div className="p-4 border-b border-[var(--border-color)] flex items-center justify-between bg-[var(--bg-surface-elevated)] shrink-0">
                 <div className="flex items-center gap-2">
@@ -442,8 +447,8 @@ export default function App() {
               </div>
 
               <div className="p-5 overflow-y-auto overscroll-contain text-xs sm:text-sm text-[var(--text-secondary)] space-y-4 no-scrollbar touch-pan-y flex-1">
-                <div className="p-3.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
-                  <span className="font-bold text-emerald-300">{t.ui.auditIntegratedHeading}</span>
+                <div className="p-3.5 rounded-lg bg-emerald-500/10 border border-emerald-500/25 text-emerald-800 dark:text-emerald-300">
+                  <span className="font-bold text-emerald-900 dark:text-emerald-200">{t.ui.auditIntegratedHeading}</span>
                   <ul className="mt-1.5 text-xs space-y-1 list-disc list-inside">
                     <li><strong>1. Smash Burger (6)</strong> : Classic (300 DA), Stacker (350 DA), Chicken Crispy (350 DA), Wham (400 DA), Big Classic (500 DA), Pannelo (600 DA)</li>
                     <li><strong>2. Pocket (3)</strong> : Chicken (500 DA), Beef (500 DA), Pannelo (600 DA)</li>
@@ -459,8 +464,8 @@ export default function App() {
                   </ul>
                 </div>
 
-                <div className="p-3.5 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-300">
-                  <span className="font-bold text-amber-200">{t.ui.auditFlaggedHeading}</span>
+                <div className="p-3.5 rounded-lg bg-amber-500/10 border border-amber-500/25 text-amber-800 dark:text-amber-200">
+                  <span className="font-bold text-amber-900 dark:text-amber-100">{t.ui.auditFlaggedHeading}</span>
                   <ul className="mt-1 text-xs space-y-1 list-disc list-inside">
                     <li><strong>Calzon</strong> : Le prix exact n&apos;est pas distinctement visible sur l&apos;image source du menu papier. Il est représenté comme null et affiché sous la mention « {t.ui.priceToConfirmBadge} » (jamais 0 DA ni gratuit). Les 6 garnitures sont confirmées.</li>
                     <li><strong>Tacos Gratiné</strong> : Ingrédients non détaillés sur la maquette d&apos;origine. Prix M (650), L (850) et XL (1050) confirmés.</li>

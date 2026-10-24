@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import type { MenuCategory } from '@/lib/menu-data';
 import type { Translations } from '@/lib/translations';
 

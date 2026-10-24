@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import { Sun, Moon } from 'lucide-react';
 import type { Theme } from '@/hooks/use-theme';
 import type { Language, Translations } from '@/lib/translations';

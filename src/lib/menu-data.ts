@@ -600,7 +600,7 @@ export const MENU_ITEMS: MenuItem[] = [
     category: 'pizza-sauce-rouge',
     description: 'Sauce tomate – Cheddar – Pepperoni',
     currency: 'DA',
-    image: '/src/assets/images/regenerated_image_1792712376985.jpg',
+    image: '/images/products/pizza-pepperoni.jpg',
     options: [
       { label: 'Mini', price: 400 },
       { label: 'Normal', price: 700 },

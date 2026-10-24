@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import type { MenuCategory, MenuItem } from '@/lib/menu-data';
 import type { Language, Translations } from '@/lib/translations';
 import { ProductCard } from '@/components/ProductCard';
@@ -12,14 +12,16 @@ interface MenuSectionProps {
   items: MenuItem[];
   t: Translations;
   language: Language;
+  priority?: boolean;
 }
 
-export function MenuSection({ category, items, t, language }: MenuSectionProps) {
+export function MenuSection({ category, items, t, language, priority = false }: MenuSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
-  const [isInView, setIsInView] = useState(false);
+  const [isInView, setIsInView] = useState<boolean>(priority);
 
   // Viewport entrance detection via IntersectionObserver
   useEffect(() => {
+    if (priority) return;
     const el = sectionRef.current;
     if (!el) return;
 
@@ -48,7 +50,7 @@ export function MenuSection({ category, items, t, language }: MenuSectionProps) 
     return () => {
       observer.disconnect();
     };
-  }, []);
+  }, [priority]);
 
   if (items.length === 0) return null;
 
@@ -77,6 +79,7 @@ export function MenuSection({ category, items, t, language }: MenuSectionProps) 
           t={t}
           language={language}
           itemsCount={items.length}
+          priority={priority}
         />
       </div>
 

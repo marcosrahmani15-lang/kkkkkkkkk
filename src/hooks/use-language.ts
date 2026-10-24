@@ -3,23 +3,32 @@
 import { useSyncExternalStore, useCallback, useEffect } from 'react';
 import { TRANSLATIONS, type Language, type Translations } from '@/lib/translations';
 
+let memoryLangFallback: Language | null = null;
+
 function applyLanguageToDocument(lang: Language) {
   if (typeof document === 'undefined') return;
   document.documentElement.lang = lang;
 }
 
 function subscribe(callback: () => void) {
+  if (typeof window === 'undefined') return () => {};
   window.addEventListener('storage', callback);
+  window.addEventListener('pannello-lang-change', callback);
   return () => {
     window.removeEventListener('storage', callback);
+    window.removeEventListener('pannello-lang-change', callback);
   };
 }
 
 function getSnapshot(): Language {
   if (typeof window === 'undefined') return 'fr';
-  const stored = localStorage.getItem('pannello_lang') as Language | null;
-  if (stored === 'fr' || stored === 'en') return stored;
-  return 'fr';
+  try {
+    const stored = localStorage.getItem('pannello_lang');
+    if (stored === 'fr' || stored === 'en') return stored;
+  } catch {
+    if (memoryLangFallback) return memoryLangFallback;
+  }
+  return memoryLangFallback ?? 'fr';
 }
 
 function getServerSnapshot(): Language {
@@ -34,9 +43,14 @@ export function useLanguage() {
   }, [language]);
 
   const setLanguage = useCallback((newLang: Language) => {
-    localStorage.setItem('pannello_lang', newLang);
+    memoryLangFallback = newLang;
+    try {
+      localStorage.setItem('pannello_lang', newLang);
+    } catch {
+      // Restricted WebView or Private Browsing: memoryLangFallback preserves session state
+    }
     applyLanguageToDocument(newLang);
-    window.dispatchEvent(new Event('storage'));
+    window.dispatchEvent(new Event('pannello-lang-change'));
   }, []);
 
   const toggleLanguage = useCallback(() => {

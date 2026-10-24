@@ -6,12 +6,16 @@ import { defineConfig } from 'vite';
 
 const rootDir = path.dirname(fileURLToPath(import.meta.url));
 
-export default defineConfig(() => {
+export default defineConfig(({ command }) => {
+  if (command === 'build') {
+    process.env.NODE_ENV = 'production';
+  }
+
   return {
+    mode: command === 'build' ? 'production' : undefined,
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: [
-        { find: 'next/image', replacement: path.resolve(rootDir, 'src/components/Image.tsx') },
         { find: /^@\/components\/(.*)/, replacement: path.resolve(rootDir, 'src/components/$1') },
         { find: /^@\/hooks\/(.*)/, replacement: path.resolve(rootDir, 'src/hooks/$1') },
         { find: /^@\/lib\/(.*)/, replacement: path.resolve(rootDir, 'src/lib/$1') },

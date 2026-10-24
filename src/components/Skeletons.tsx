@@ -1,5 +1,3 @@
-import React from 'react';
-
 /**
  * Shimmer-based Skeleton for PANNELLO Product Cards.
  * Preserves the exact geometry, aspect ratios, and padding to prevent Cumulative Layout Shift (CLS).

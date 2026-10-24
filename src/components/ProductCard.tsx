@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import type { MenuItem } from '@/lib/menu-data';
 import type { Translations } from '@/lib/translations';
 import { Flame, AlertCircle } from 'lucide-react';

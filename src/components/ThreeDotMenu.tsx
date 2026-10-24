@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import {
   MoreVertical,
@@ -12,11 +12,9 @@ import {
   ChevronRight,
   Check,
   UtensilsCrossed,
-  Sparkles,
 } from 'lucide-react';
 import type { MenuCategory } from '@/lib/menu-data';
 import type { Language, Translations } from '@/lib/translations';
-import Image from '@/components/Image';
 
 interface ThreeDotMenuProps {
   categories: MenuCategory[];
@@ -43,7 +41,7 @@ function TikTokIcon({ className }: { className?: string }) {
 }
 
 // Category visual icon map for instant recognition
-const CATEGORY_ICONS: Record<string, React.ReactNode> = {
+const CATEGORY_ICONS: Record<string, ReactNode> = {
   'smash-burger': <span className="text-sm">🍔</span>,
   pocket: <span className="text-sm">🌯</span>,
   fries: <span className="text-sm">🍟</span>,
@@ -229,7 +227,7 @@ export function ThreeDotMenu({
             aria-modal="true"
             aria-label={t.ui.threeDotMenuAria}
             onClick={(e) => e.stopPropagation()}
-            className="relative z-[1200] w-full max-w-[340px] xs:max-w-[360px] md:max-w-[380px] h-[100dvh] md:h-auto md:max-h-[min(90vh,calc(100dvh-2.5rem))] md:top-4 md:left-6 md:my-0 flex flex-col bg-[var(--bg-surface)] text-[var(--text-main)] border-r md:border border-[var(--border-color)] shadow-2xl shadow-black/80 overflow-hidden md:rounded-2xl animate-in slide-in-from-left duration-200"
+            className="relative z-[1200] w-full max-w-[340px] xs:max-w-[360px] md:max-w-[380px] h-[100dvh] md:h-auto md:max-h-[min(90vh,calc(100dvh-2.5rem))] md:top-4 md:left-6 md:my-0 flex flex-col bg-[var(--bg-surface)] text-[var(--text-main)] border-r md:border border-[var(--border-color)] shadow-2xl shadow-black/80 overflow-hidden md:rounded-2xl animate-drawer-in"
           >
             {/* Top Brand Accent Hairline (PANNELLO Red & Gold Gradient) */}
             <div className="h-1.5 w-full bg-gradient-to-r from-[#C8102E] via-[#FBBF24] to-[#C8102E] shrink-0" />
@@ -237,13 +235,24 @@ export function ThreeDotMenu({
             {/* Menu Header with Safe-Area Top Inset for iPhone Notch / Dynamic Island */}
             <div className="pt-[max(env(safe-area-inset-top,0px),0.75rem)] px-4 py-3 border-b border-[var(--border-color)] bg-[var(--bg-surface-elevated)] flex items-center justify-between shrink-0">
               <div className="flex items-center gap-2.5">
-                <div className="relative w-24 h-6.5">
-                  <Image
+                <div className="header-logo-container relative w-24 h-6.5 flex items-center justify-center">
+                  <img
+                    src="/assets/pannello_logo_red.png"
+                    alt="PANNELLO"
+                    width={291}
+                    height={74}
+                    loading="eager"
+                    decoding="async"
+                    className="header-logo-image header-logo-light absolute inset-0 w-full h-full object-contain pointer-events-none"
+                  />
+                  <img
                     src="/assets/pannello_logo_hero.png"
                     alt="PANNELLO"
-                    fill
-                    sizes="96px"
-                    className="object-contain"
+                    width={580}
+                    height={148}
+                    loading="eager"
+                    decoding="async"
+                    className="header-logo-image header-logo-dark absolute inset-0 w-full h-full object-contain pointer-events-none"
                   />
                 </div>
                 <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-bold uppercase tracking-wider bg-[#C8102E]/10 text-[#C8102E] border border-[#C8102E]/20">
